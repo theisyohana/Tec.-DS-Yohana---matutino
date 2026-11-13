@@ -1,0 +1,1 @@
+[13/11/2026 10:58:59] EMPRESA | Nome: oi | CNPJ: 123 | Endereço: po | Telefone: 12
