@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<!-- Diz ao navegador que isto é uma página HTML moderna -->
+<html lang="pt-BR">
+<head>
+  <!-- Permite acentos e "ç" aparecerem certos -->
+  <meta charset="UTF-8">
+
+  <!-- Faz a página se ajustar ao tamanho da tela (celular, computador) -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Nome que aparece na aba do navegador -->
+  <title>Painel de RH</title>
+
+  <!-- Letra "Inter". Precisa de internet; sem internet, usa a letra padrão do Windows -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Liga esta página ao arquivo de visual (style.css) -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- =====================================================
+       PARTE 1: TELA DE LOGIN
+       É a primeira coisa que aparece. Some quando a pessoa acerta a conta e a senha.
+       ===================================================== -->
+  <div class="tela-login" id="tela-login">
+
+    <!-- Caixa que segura tudo: lado azul (esquerda) e formulário (direita) -->
+    <main class="login">
+
+      <!-- ============ LADO AZUL (enfeite e nome do sistema) ============ -->
+      <section class="login-lado">
+        <div class="login-marca">
+          <span class="login-marca-sigla">RH</span>
+          <span class="login-marca-nome">Gestão de Pessoas</span>
+        </div>
+
+        <div class="login-lado-texto">
+          <h2>Tudo sobre a sua equipe em um só lugar.</h2>
+          <p>Cadastre empresas, funcionários, candidatos, vagas e departamentos de forma simples e organizada.</p>
+        </div>
+
+        <p class="login-lado-rodape">Sistema de RH · versão 1.0</p>
+      </section>
+
+      <!-- ============ LADO BRANCO (formulário de entrada) ============ -->
+      <section class="login-cartao">
+
+        <h1>Bem-vindo de volta</h1>
+        <p class="login-sub">Entre com a sua conta para acessar o painel.</p>
+
+        <!-- Mensagem de erro: começa escondida (hidden) e só aparece se errar -->
+        <div class="erro" id="erro" role="alert" hidden>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/>
+          </svg>
+          <span>Conta ou senha incorretas. Tente novamente.</span>
+        </div>
+
+        <!-- Formulário. Quem confere os dados é o código no final da página -->
+        <form id="form-login" autocomplete="off">
+
+          <!-- Campo da conta -->
+          <label class="campo">
+            <span class="campo-nome">Conta</span>
+            <span class="campo-caixa">
+              <!-- ícone de pessoa -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+              </svg>
+              <input type="text" id="conta" placeholder="Digite a sua conta" required autofocus>
+            </span>
+          </label>
+
+          <!-- Campo da senha (type="password" esconde o que é digitado) -->
+          <label class="campo">
+            <span class="campo-nome">Senha</span>
+            <span class="campo-caixa">
+              <!-- ícone de cadeado -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+              </svg>
+              <input type="password" id="senha" placeholder="Digite a sua senha" required>
+            </span>
+          </label>
+
+          <button type="submit" class="botao-entrar">Entrar</button>
+        </form>
+
+      </section>
+    </main>
+  </div>
+
+
+  <!-- =====================================================
+       PARTE 2: PÁGINA DO RH (painel)
+       Começa escondida (hidden). Só aparece depois do login certo.
+       ===================================================== -->
+  <div id="painel" hidden>
+
+    <!--
+      BOTÕES ESCONDIDOS
+      São eles que decidem qual tela aparece (como o "opcao" do seu código Python).
+      O primeiro começa marcado (checked), então a tela de Empresas abre primeiro.
+    -->
+    <input type="radio" name="aba" id="aba-empresas" checked>
+    <input type="radio" name="aba" id="aba-funcionarios">
+    <input type="radio" name="aba" id="aba-candidatos">
+    <input type="radio" name="aba" id="aba-vagas">
+    <input type="radio" name="aba" id="aba-departamentos">
+
+    <!-- Caixa que segura tudo: menu na esquerda, o resto na direita -->
+    <div class="layout">
+
+      <!-- ============ MENU LATERAL ============ -->
+      <nav class="menu">
+
+        <!-- Nome do sistema, no topo do menu -->
+        <div class="marca">
+          <span class="marca-sigla">RH</span>
+          <span class="marca-textos">
+            <strong>Gestão de Pessoas</strong>
+            <small>Painel administrativo</small>
+          </span>
+        </div>
+
+        <!-- Título pequeno acima das opções -->
+        <p class="menu-titulo">Cadastros</p>
+
+        <!-- Cada label é um botão do menu. O "for" liga ao botão escondido lá em cima.
+             Dentro de cada um tem um ícone (svg) e o texto. -->
+        <label for="aba-empresas">
+          <svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M3 21h18M5 21V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v16M19 21V11a2 2 0 0 0-2-2h-2M9 7h2M9 11h2M9 15h2"/>
+          </svg>
+          <span>Empresas</span>
+        </label>
+
+        <label for="aba-funcionarios">
+          <svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M21 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+          <span>Funcionários</span>
+        </label>
+
+        <label for="aba-candidatos">
+          <svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/>
+          </svg>
+          <span>Candidatos</span>
+        </label>
+
+        <label for="aba-vagas">
+          <svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+          </svg>
+          <span>Vagas</span>
+        </label>
+
+        <label for="aba-departamentos">
+          <svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
+          </svg>
+          <span>Departamentos</span>
+        </label>
+
+        <!-- Rodapezinho do menu -->
+        <p class="menu-rodape">Sistema de RH · versão 1.0</p>
+      </nav>
+
+      <!-- Lado direito: barra de cima + conteúdo -->
+      <div class="principal">
+
+        <!-- ============ BARRA SUPERIOR ============ -->
+        <header class="topo">
+          <p class="topo-caminho">Painel <span>/</span> Gestão de pessoas</p>
+
+          <!-- Bolinha com as iniciais de quem está usando o sistema e o botão Sair -->
+          <div class="topo-usuario">
+            <span class="avatar">PR</span>
+            <span class="topo-usuario-nome">Professor</span>
+
+            <!-- Botão que volta para a tela de login -->
+            <a class="sair" href="#" id="botao-sair">Sair</a>
+          </div>
+        </header>
+
+        <!-- ============ ÁREA PRINCIPAL ============ -->
+        <main class="conteudo">
+
+          <!-- ---------- TELA 1: EMPRESAS ---------- -->
+          <section class="tela" id="empresas">
+
+            <!-- Faixa azul no topo da tela, com ícone, título e uma frase -->
+            <header class="cabecalho">
+              <div class="cabecalho-icone">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M3 21h18M5 21V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v16M19 21V11a2 2 0 0 0-2-2h-2M9 7h2M9 11h2M9 15h2"/>
+                </svg>
+              </div>
+              <div>
+                <h2>Empresas</h2>
+                <p>Cadastre novas empresas e consulte as já registradas.</p>
+              </div>
+            </header>
+
+            <!-- Formulário de cadastro (equivale ao inserir_empresa do Python) -->
+            <form class="cartao" action="#" method="post">
+              <h3>Registrar empresa</h3>
+
+              <!-- Os campos ficam em uma grade que se ajusta ao tamanho da tela -->
+              <div class="campos">
+                <label>Nome da empresa
+                  <input type="text" name="nome_empresa" required>
+                </label>
+                <label>CNPJ
+                  <input type="text" name="cnpj" placeholder="00.000.000/0000-00" required>
+                </label>
+                <label>Endereço
+                  <input type="text" name="endereco" required>
+                </label>
+                <label>Telefone
+                  <input type="tel" name="telefone_empresa" placeholder="(00) 00000-0000" required>
+                </label>
+              </div>
+
+              <!-- Botão com um sinal de "+" desenhado -->
+              <button type="submit">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+                Registrar empresa
+              </button>
+            </form>
+
+            <!-- Lista de empresas (equivale ao ver_empresas do Python) -->
+            <div class="cartao">
+              <h3>Empresas cadastradas</h3>
+
+              <!-- Esta caixa cria uma barra de rolagem se a tabela for larga demais -->
+              <div class="tabela-rolagem">
+                <table>
+                  <thead>
+                    <tr><th>ID</th><th>Nome</th><th>CNPJ</th><th>Endereço</th><th>Telefone</th></tr>
+                  </thead>
+                  <tbody>
+                    <!-- Mensagem que aparece enquanto não há nada cadastrado -->
+                    <tr class="vazio">
+                      <td colspan="5">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>
+                        Nenhuma empresa cadastrada.
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <!-- ---------- TELA 2: FUNCIONÁRIOS ---------- -->
+          <section class="tela" id="funcionarios">
+
+            <header class="cabecalho">
+              <div class="cabecalho-icone">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M21 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+                </svg>
+              </div>
+              <div>
+                <h2>Funcionários</h2>
+                <p>Registre os funcionários e acompanhe a lista da equipe.</p>
+              </div>
+            </header>
+
+            <!-- Formulário (equivale ao inserir_funcionario) -->
+            <form class="cartao" action="#" method="post">
+              <h3>Registrar funcionário</h3>
+              <div class="campos">
+                <label>Nome do funcionário
+                  <input type="text" name="nome_funcionario" required>
+                </label>
+                <label>CPF
+                  <input type="text" name="cpf_funcionario" placeholder="000.000.000-00" required>
+                </label>
+                <label>Telefone
+                  <input type="tel" name="telefone_funcionario" placeholder="(00) 00000-0000" required>
+                </label>
+              </div>
+              <button type="submit">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+                Registrar funcionário
+              </button>
+            </form>
+
+            <!-- Lista (equivale ao ver_funcionarios) -->
+            <div class="cartao">
+              <h3>Funcionários cadastrados</h3>
+              <div class="tabela-rolagem">
+                <table>
+                  <thead>
+                    <tr><th>ID</th><th>Nome</th><th>CPF</th><th>Telefone</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr class="vazio">
+                      <td colspan="4">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>
+                        Nenhum funcionário cadastrado.
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <!-- ---------- TELA 3: CANDIDATOS ---------- -->
+          <section class="tela" id="candidatos">
+
+            <header class="cabecalho">
+              <div class="cabecalho-icone">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/>
+                </svg>
+              </div>
+              <div>
+                <h2>Candidatos</h2>
+                <p>Cadastre quem quer trabalhar na empresa e a vaga desejada.</p>
+              </div>
+            </header>
+
+            <!-- Formulário (equivale ao cadastrar_candidatos) -->
+            <form class="cartao" action="#" method="post">
+              <h3>Registrar candidato</h3>
+              <div class="campos">
+                <label>Nome do candidato
+                  <input type="text" name="nome_candidato" required>
+                </label>
+                <label>CPF
+                  <input type="text" name="cpf_candidato" placeholder="000.000.000-00" required>
+                </label>
+                <label>Telefone
+                  <input type="tel" name="telefone_candidato" placeholder="(00) 00000-0000" required>
+                </label>
+                <label>Vaga que deseja
+                  <input type="text" name="vaga_candidato" required>
+                </label>
+              </div>
+              <button type="submit">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+                Registrar candidato
+              </button>
+            </form>
+
+            <!-- Lista (equivale ao ver_candidatos) -->
+            <div class="cartao">
+              <h3>Candidatos cadastrados</h3>
+              <div class="tabela-rolagem">
+                <table>
+                  <thead>
+                    <tr><th>ID</th><th>Nome</th><th>CPF</th><th>Telefone</th><th>Vaga</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr class="vazio">
+                      <td colspan="5">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>
+                        Nenhum candidato cadastrado.
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <!-- ---------- TELA 4: VAGAS ---------- -->
+          <section class="tela" id="vagas">
+
+            <header class="cabecalho">
+              <div class="cabecalho-icone">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+                </svg>
+              </div>
+              <div>
+                <h2>Vagas</h2>
+                <p>Publique vagas abertas com cargo e salário.</p>
+              </div>
+            </header>
+
+            <!-- Formulário (equivale ao cadastrar_vagas) -->
+            <form class="cartao" action="#" method="post">
+              <h3>Registrar vaga</h3>
+              <div class="campos">
+                <label>Vaga
+                  <input type="text" name="vagas" required>
+                </label>
+                <label>Cargo da vaga
+                  <input type="text" name="cargo_vagas" required>
+                </label>
+                <!-- type="number" só aceita números; step="0.01" aceita centavos -->
+                <label>Salário da vaga (R$)
+                  <input type="number" name="salario_vagas" step="0.01" min="0" placeholder="0,00" required>
+                </label>
+              </div>
+              <button type="submit">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+                Registrar vaga
+              </button>
+            </form>
+
+            <!-- Lista (equivale ao ver_vagas) -->
+            <div class="cartao">
+              <h3>Vagas cadastradas</h3>
+              <div class="tabela-rolagem">
+                <table>
+                  <thead>
+                    <tr><th>ID</th><th>Cargo</th><th>Salário</th><th>Vaga</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr class="vazio">
+                      <td colspan="4">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>
+                        Nenhuma vaga cadastrada.
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <!-- ---------- TELA 5: DEPARTAMENTOS ---------- -->
+          <section class="tela" id="departamentos">
+
+            <header class="cabecalho">
+              <div class="cabecalho-icone">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
+                </svg>
+              </div>
+              <div>
+                <h2>Departamentos</h2>
+                <p>Organize os setores e defina quem é o responsável por cada um.</p>
+              </div>
+            </header>
+
+            <!-- Formulário (equivale ao cadastrar_departamento) -->
+            <form class="cartao" action="#" method="post">
+              <h3>Registrar departamento</h3>
+              <div class="campos">
+                <label>Nome do departamento
+                  <input type="text" name="nome_departamento" required>
+                </label>
+                <label>Responsável do departamento
+                  <input type="text" name="responsavel_departamento" required>
+                </label>
+              </div>
+              <button type="submit">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+                Registrar departamento
+              </button>
+            </form>
+
+            <!-- Lista (equivale ao ver_departamento) -->
+            <div class="cartao">
+              <h3>Departamentos cadastrados</h3>
+              <div class="tabela-rolagem">
+                <table>
+                  <thead>
+                    <tr><th>ID</th><th>Nome do departamento</th><th>Responsável</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr class="vazio">
+                      <td colspan="3">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>
+                        Nenhum departamento cadastrado.
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+        </main>
+      </div>
+    </div>
+  </div>
+
+
+  <!--CÓDIGO QUE CONFERE A CONTA E A SENHA
+      E troca entre a tela de login e a página do RH-->
+  <script>
+    // Aqui ficam a conta e a senha corretas. Para trocar, mude estas duas linhas.
+    const CONTA_CERTA = "professor";
+    const SENHA_CERTA = "1234";
+
+    // Pega as partes da página que vamos usar
+    const telaLogin  = document.getElementById("tela-login");
+    const painel     = document.getElementById("painel");
+    const formulario = document.getElementById("form-login");
+    const caixaErro  = document.getElementById("erro");
+    const campoConta = document.getElementById("conta");
+    const campoSenha = document.getElementById("senha");
+
+    // Esconde o login e mostra a página do RH
+    function mostrarPainel() {
+      telaLogin.hidden = true;
+      painel.hidden = false;
+      window.scrollTo(0, 0);
+    }
+
+    // Esconde a página do RH e volta para o login (com os campos limpos)
+    function mostrarLogin() {
+      painel.hidden = true;
+      telaLogin.hidden = false;
+      campoConta.value = "";
+      campoSenha.value = "";
+      caixaErro.hidden = true;
+      campoConta.focus();
+    }
+
+    // Se a pessoa já entrou antes (e só deu F5 na página), continua dentro
+    if (sessionStorage.getItem("logado") === "sim") {
+      mostrarPainel();
+    }
+
+    // Quando a pessoa clica em "Entrar", este código roda
+    formulario.addEventListener("submit", function (evento) {
+
+      // Impede a página de recarregar sozinha
+      evento.preventDefault();
+
+      // Lê o que a pessoa digitou
+      const conta = campoConta.value.trim();
+      const senha = campoSenha.value;
+
+      if (conta === CONTA_CERTA && senha === SENHA_CERTA) {
+        // ACERTOU: guarda a informação "logado" e abre a página do RH
+        sessionStorage.setItem("logado", "sim");
+        mostrarPainel();
+
+      } else {
+        // ERROU: mostra a mensagem de erro, limpa a senha e volta o cursor nela
+        caixaErro.hidden = false;
+        campoSenha.value = "";
+        campoSenha.focus();
+      }
+    });
+
+    // Botão "Sair": apaga o login e volta para a tela de entrada
+    document.getElementById("botao-sair").addEventListener("click", function (evento) {
+      evento.preventDefault();
+      sessionStorage.removeItem("logado");
+      sessionStorage.removeItem("aba");
+      mostrarLogin();
+    });
+
+    // Lembra qual aba do menu estava aberta (assim, ao registrar algo e a página
+    // recarregar, você volta para a mesma aba e não para "Empresas")
+    const abaSalva = sessionStorage.getItem("aba");
+    if (abaSalva && document.getElementById(abaSalva)) {
+      document.getElementById(abaSalva).checked = true;
+    }
+
+    document.querySelectorAll('input[name="aba"]').forEach(function (botao) {
+      botao.addEventListener("change", function () {
+        sessionStorage.setItem("aba", botao.id);
+      });
+    });
+  </script>
+
+</body>
+</html>
