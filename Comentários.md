@@ -1,102 +1,134 @@
 
-# Devolutiva formativa — Atividade 01 da SA
+# Devolutiva formativa — Atividade 02 da SA
 
-**Estudante:** Yohana  
+**Estudante:** Yohana Müller Theis  
 **Turma:** Rio Negrinho — Manhã  
 **Unidade Curricular:** Programação de Aplicativos  
-**Projeto:** Empresa de Recursos Humanos  
-**Código analisado:** `codigo/app.py`  
-**Referência:** Situação de Aprendizagem nº 1 — *Da Ideia ao Código*
+**Projeto:** Sistema de Recursos Humanos  
+**Atividade:** Interface funcional  
+**Arquivos analisados:** `codigo/app.py`, `interface/index.html` e `interface/style.css`
 
 ## O que você já conseguiu desenvolver
 
-Yohana, você iniciou um sistema relacionado a uma empresa de Recursos Humanos. Seu projeto utiliza Python para registrar e consultar informações por meio de um arquivo de texto, demonstrando o uso de funções e operações com arquivos.
+Yohana, você criou uma interface web para um sistema de Recursos Humanos com login demonstrativo, navegação entre setores e diferentes formulários.
+
+O código apresenta comentários explicativos e organização visual por áreas.
 
 Pontos positivos identificados:
 
-- Criou uma função `registrar_log()` para gravar informações em arquivo.
-- Utilizou `datetime` para registrar a data e o horário das operações.
-- Implementou uma função `ler_logs()` para consultar registros anteriores.
-- Criou a função `limpar_logs()` para apagar o conteúdo do arquivo.
-- Utilizou `os.path` para localizar o arquivo de registros em relação ao local do programa.
-- Aplicou **funções, condicionais, repetição e manipulação de arquivos**.
-- Criou um menu inicial para organizar as operações.
+- Criou uma página com estrutura HTML organizada.
+- Desenvolveu CSS para a apresentação das telas.
+- Criou login demonstrativo com JavaScript.
+- Implementou mensagens de erro para entradas inválidas no login.
+- Utilizou `sessionStorage` para controlar o estado da interface.
+- Desenvolveu navegação entre as áreas do RH.
+- Criou formulários para empresas, funcionários, candidatos, vagas e departamentos.
+- Aplicou campos obrigatórios e tipos de entrada específicos.
+- Organizou o Python em funções de cadastro e consulta.
+- Implementou operações SQL para trabalhar com PostgreSQL.
+- Incluiu comentários explicando o comportamento de diversos componentes.
+
+## O que foi ajustado desde a última devolutiva
+
+### 1. Cadastro de funcionários — ATENDIDO NO PYTHON
+
+Na avaliação anterior, a opção destinada aos funcionários repetia o cadastro de empresas.
+
+A versão atual possui uma função específica, `inserir_funcionario()`, além de `ver_funcionarios()`.
+
+**Correção identificada:** os registros de funcionários agora possuem operações próprias no Python.
+
+### 2. Separação das informações — ATENDIDO NO PYTHON
+
+A implementação anterior utilizava um arquivo de texto para registrar informações.
+
+Agora existem operações SQL específicas para empresas, funcionários, candidatos, vagas e departamentos.
+
+**Evolução positiva:** as informações passaram a ser organizadas por entidades.
+
+### 3. Organização da interface — ATENDIDO
+
+A nova entrega apresenta telas e formulários relacionados às diferentes áreas do sistema de RH.
+
+A navegação e o login demonstrativo são implementados por JavaScript.
+
+### 4. Validações — PARCIALMENTE ATENDIDO
+
+A interface utiliza campos obrigatórios e alguns tipos de entrada apropriados.
+
+Entretanto, ainda é necessário implementar verificações completas para os dados que serão armazenados.
 
 ## O que precisa ser corrigido
 
-### 1. Corrigir a opção de cadastro de funcionários
+### 5. Integrar os formulários HTML ao Python
 
-O menu principal apresenta a opção **"Registrar um funcionário"**, mas esse caminho repete o formulário de cadastro de empresa.
+Os formulários de cadastro utilizam `action="#"`, e o JavaScript disponível não apresenta chamadas às funções Python responsáveis pelas operações SQL.
 
-Atualmente, não existe um cadastro específico com dados de funcionário.
+**Como melhorar:** criar uma aplicação Flask com rotas para receber os formulários e chamar as funções de cadastro. Exibir mensagens de sucesso ou erro após cada operação.
 
-**Como melhorar:** criar uma função `cadastrar_funcionario()` com campos adequados para um cadastro fictício, como nome, cargo e empresa vinculada. A opção 2 deve chamar essa função, sem repetir o cadastro de empresas.
+O próximo passo não é refazer o HTML, mas conectar a interface existente à lógica do sistema.
 
-### 2. Diferenciar os registros de empresas e funcionários
+### 6. Corrigir a primeira linha do arquivo Python
 
-O programa grava todas as informações como linhas de texto. No estado atual, a consulta mostra o conteúdo do arquivo sem separar registros por tipo.
+O arquivo `codigo/app.py` começa com a expressão isolada `interface`, que não corresponde a uma variável definida.
 
-**Como melhorar:** identificar claramente cada tipo de registro e criar funções de consulta específicas. Para evoluir o projeto, considere utilizar dicionários ou uma estrutura de dados que facilite pesquisas e alterações.
+**Como melhorar:** remover essa linha para permitir que o programa prossiga normalmente para as importações e a conexão com o banco.
 
-### 3. Validar as informações dos cadastros
+### 7. Proteger as credenciais
 
-Nome, CNPJ, endereço e telefone são recebidos sem verificações.
+O código Python contém uma credencial de banco diretamente no arquivo, e o login da interface utiliza credenciais fixas em JavaScript.
 
-**Como melhorar:** impedir campos obrigatórios vazios, remover espaços desnecessários e conferir os formatos utilizados. Durante os testes, utilizar somente dados fictícios.
+**Como melhorar:** substituir a credencial do banco já publicada, não armazenar novas senhas no código e utilizar configurações de ambiente. Para uma autenticação real, a verificação deverá ocorrer no servidor.
 
-### 4. Proteger a operação de apagar registros
+### 8. Corrigir a localização dos scripts SQL
 
-A opção `limpar_logs()` substitui todo o conteúdo do arquivo por uma string vazia, apagando os registros existentes sem solicitar confirmação.
+O Python procura arquivos SQL em uma pasta relativa ao diretório `codigo`, enquanto os arquivos SQL do repositório estão em `banco_de_dados`, na raiz.
 
-**Como melhorar:** apresentar um aviso e exigir confirmação antes de apagar o arquivo. Em uma versão futura, diferenciar exclusão de registros e limpeza de logs técnicos.
+Além disso, os arquivos SQL publicados estão vazios.
+
+**Como melhorar:** ajustar o caminho, disponibilizar os comandos SQL necessários e conferir sua execução.
 
 ## Oportunidades de melhoria
 
-### 5. Evitar a duplicação de código
+### 9. Melhorar a modularização
 
-O formulário de cadastro de empresa aparece duas vezes no menu principal.
+**Como melhorar:** separar funções de banco de dados, rotas da aplicação e validações, mantendo a interface responsável pela apresentação.
 
-**Como melhorar:** criar uma função `cadastrar_empresa()` e chamá-la somente na opção correspondente. Isso facilitará a manutenção.
+### 10. Melhorar as validações numéricas
 
-### 6. Separar os dados de negócio dos registros de eventos
+A leitura do salário no Python utiliza `float()` diretamente.
 
-O arquivo `log.txt` está sendo utilizado como armazenamento principal das informações cadastradas.
+**Como melhorar:** tratar entradas inválidas com `try/except` e impedir valores incompatíveis com as regras do cadastro.
 
-**Como melhorar:** diferenciar dados de empresas e funcionários de logs do sistema. Os dados podem ser mantidos inicialmente em estruturas próprias e futuramente integrados a um banco.
+### 11. Ampliar a documentação
 
-### 7. Melhorar o tratamento de erros de arquivo
-
-As funções de leitura e gravação utilizam `open()`, mas não tratam situações em que o arquivo não pode ser acessado ou gravado.
-
-**Como melhorar:** tratar erros esperados de entrada e saída, informando ao usuário quando uma operação não puder ser concluída.
-
-### 8. Complementar a documentação
-
-O README apresenta o tema, mas ainda precisa explicar as funcionalidades específicas do projeto.
-
-**Como melhorar:** acrescentar o objetivo do sistema de RH, instruções de execução, estrutura das informações e exemplos de testes.
+**Como melhorar:** atualizar o README com instruções para configurar o PostgreSQL, executar a aplicação e utilizar os formulários.
 
 ## Testes recomendados
 
-1. Cadastrar uma empresa com dados fictícios.
-2. Tentar cadastrar uma empresa com campos vazios.
-3. Cadastrar um funcionário após implementar sua função.
-4. Consultar separadamente empresas e funcionários.
-5. Encerrar e reiniciar o programa, verificando a permanência dos dados.
-6. Tentar apagar os registros e cancelar a confirmação.
-7. Testar o comportamento quando o arquivo de registros não existir.
-8. Informar uma opção inexistente no menu.
+1. Abrir a interface HTML e conferir o CSS.
+2. Testar o login demonstrativo com entradas válidas e inválidas.
+3. Navegar pelas cinco áreas do RH.
+4. Atualizar a página e conferir a área selecionada.
+5. Executar o código Python sem a linha inicial incorreta.
+6. Verificar a conexão com o PostgreSQL.
+7. Cadastrar uma empresa com dados fictícios.
+8. Cadastrar e consultar um funcionário.
+9. Verificar os caminhos dos scripts SQL.
+10. Após a integração, cadastrar informações diretamente pela interface web.
 
 ## Prioridades para a próxima versão
 
-1. **Corrigir a opção de cadastro de funcionários.**
-2. **Separar os registros de empresas e funcionários.**
-3. **Eliminar a duplicação do formulário.**
-4. **Validar os campos e proteger a exclusão de dados.**
-5. **Organizar o armazenamento e documentar os testes.**
+1. **Corrigir a inicialização do Python.**
+2. **Retirar e substituir as credenciais publicadas.**
+3. **Conectar os formulários HTML às operações Python.**
+4. **Corrigir os caminhos e o conteúdo dos scripts SQL.**
+5. **Ampliar as validações e os testes de integração.**
 
 ## Mensagem final
 
-Yohana, você já aplicou conceitos importantes de **funções, entrada de dados, condições, repetição e manipulação de arquivos**. O registro de informações com data e horário é uma funcionalidade que poderá ser aproveitada na evolução do projeto.
+Yohana, você apresentou evolução na organização das informações e na construção de uma interface para diferentes áreas do RH.
 
-Seu principal desafio agora é garantir que cada opção do menu execute a tarefa anunciada e que as informações sejam organizadas de forma adequada. Continue construindo o sistema por etapas, testando cada funcionalidade antes de avançar para a próxima.
+O desenvolvimento de formulários, navegação e operações SQL demonstra conhecimentos importantes.
+
+Seu próximo desafio é unir esses componentes em uma aplicação integrada, garantindo que as ações realizadas no navegador sejam processadas corretamente pelo Python.
